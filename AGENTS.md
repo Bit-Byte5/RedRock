@@ -2,6 +2,8 @@
 
 RedRock is a Quest hybrid app plus an ADB sidecar. Home opens a **2D Horizon window**. Play enters a **mono full-view GLES host** in that window. Sideload artifacts live in `apk/` (gitignored).
 
+The GitHub repo is **public**. Never commit secrets, tokens, `.env`, APKs, OBB, logs, keystores, or headset IPs.
+
 ## Must not break
 
 - Keep `LauncherActivity` and `ImmersiveActivity` as two tasks. Do not merge them.
@@ -14,6 +16,7 @@ RedRock is a Quest hybrid app plus an ADB sidecar. Home opens a **2D Horizon win
 
 | Topic | File |
 |---|---|
+| Public repo / no secrets | `.cursor/rules/public-repo.mdc` |
 | Hybrid 2D / VR split | `.cursor/rules/redrock-hybrid.mdc` |
 | Mono game host | [docs/agents/game-host.md](docs/agents/game-host.md) |
 | Play fetch legality and secrets | `.cursor/rules/play-fetch.mdc` |

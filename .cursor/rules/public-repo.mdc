@@ -1,0 +1,32 @@
+---
+description: Public GitHub repo — never commit private or local-only material
+alwaysApply: true
+---
+
+# Public repository
+
+This project is **public** at [github.com/Bit-Byte5/RedRock](https://github.com/Bit-Byte5/RedRock). Treat every commit, push, and PR as world-readable.
+
+Do not add private, personal, or device-local material to git. If it is already staged or committed, remove it before pushing.
+
+## Never commit
+
+- Google tokens, AAS, oauth cookies, passwords, emails used for sign-in
+- `.env`, `.env.local`, `local.properties`
+- `*.apk`, `*.obb`, `*.aab`, keystores, `*.pem`, `*.jks`
+- Headset IPs, pairing codes, wireless-debug hosts
+- `logs/`, captured logcat, crash dumps
+- `mods/*.so` binaries staged on the Mac
+
+Keep those gitignored. Tokens live in EncryptedSharedPreferences on the headset. Log `packageName` and `FetchState` only.
+
+```
+# ❌ BAD — private local config in the tree
+QUEST_HOST=192.168.1.20
+Token=oauth2_4/...
+
+# ✅ GOOD — empty example only
+QUEST_HOST=
+```
+
+Do not implement paid/DRM bypass or dump cracked APKs into the repo. Play fetch is ownership-only, personal use.

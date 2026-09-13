@@ -1,0 +1,19 @@
+---
+description: Legal Play APK fetch, ownership, and secrets
+alwaysApply: true
+---
+
+# Play fetch
+
+Download only apps the **signed-in Google account owns** (mcpelauncher model). Personal, non-commercial use on this user's devices. Do not redistribute APKs.
+
+- Do not use APKPure, mirrors, or cracked dumps.
+- Do not implement paid/DRM bypass. If Play refuses, surface `FetchError.OWNERSHIP` or `TOS`.
+- Never commit tokens, passwords, `.env`, `*.apk`, or `*.obb`.
+- On-headset secrets: EncryptedSharedPreferences. Never log AAS / oauth tokens.
+- Target ABI `arm64-v8a`. Request split APKs and OBB when Play sends them.
+- Log `packageName` and `FetchState` only — never email tokens or AAS values.
+- Bind UI to `PlayCatalog` / `GooglePlayCatalog`. Do not talk to Play from composables.
+- Sign-in is Google EmbeddedSetup in a WebView. Do not collect passwords in our code.
+
+Full spec: `docs/agents/play-fetch.md`.

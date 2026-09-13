@@ -16,7 +16,9 @@ logs/
 mods/*.so
 
 # OS / editor
-.cursor/
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
 .DS_Store
 Thumbs.db
 .idea/

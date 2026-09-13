@@ -1,0 +1,17 @@
+---
+description: Quest hybrid 2D window vs immersive VR split
+alwaysApply: true
+---
+
+# Hybrid 2D / VR
+
+Home launches `LauncherActivity` (`com.oculus.intent.category.2D`). Play starts hosted Minecraft `MainActivity` **in that same 2D task**. `ImmersiveActivity` (`com.oculus.intent.category.VR`) stays for later stereo only.
+
+- Do not collapse launcher and immersive into one activity.
+- Keep launcher `singleTask` + `taskAffinity` `…redrock.launcher` so Minecraft can sit on top of the library window. Do not use `singleInstance` (that forces a second task).
+- Keep immersive `singleTask` + `taskAffinity` `…redrock.immersive`.
+- Host Minecraft in the default process. Do not use a `:minecraft` process — Horizon will not keep that in the 2D window.
+- Do not start immersive from Play until stereo Minecraft is in scope. Never `finish()` the 2D library activity to “enter” the game.
+- Fetch / account / unpack chrome stays on the library panel.
+
+Default window size is in `AndroidManifest.xml`. Use SpatialTheme / RedRockTheme on the panel.

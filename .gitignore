@@ -1,0 +1,33 @@
+# Secrets / local device config
+.env
+.env.local
+*.pem
+*.keystore
+*.jks
+
+# Sideloaded builds (keep the folder)
+apk/*.apk
+apk/*.obb
+
+# Captured logcat
+logs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Android / Unity / Unreal leftovers if the app tree lands here later
+*.apk
+*.aab
+*.obb
+Library/
+Temp/
+Obj/
+Builds/
+Build/
+.gradle/
+local.properties
+*.iml

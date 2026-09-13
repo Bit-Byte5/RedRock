@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/common.sh
+source "$ROOT/scripts/common.sh"
+load_env
+
+CMD="${1:-help}"
+shift || true
+
+case "$CMD" in
+  status|devices|adb)
+    require_adb
+    info "adb $($ADB_BIN version | head -n1)  ($ADB_BIN)"
+    "$ADB_BIN" start-server >/dev/null
+    echo
+    "$ADB_BIN" devices -l
+    count="$(device_count)"
+    echo
+    if [[ "$count" -gt 0 ]]; then
+      info "$count device(s) ready"
+    else
+      warn "adb is running, but no headset is connected yet"
+    fi
+    ;;
+
+  pair)
+    host="${1:-}"
+    code="${2:-}"
+    [[ -n "$host" ]] || die "usage: ./redrock pair <ip:pairing-port> [pairing-code]"
+    require_adb
+    if [[ -n "$code" ]]; then
+      "$ADB_BIN" pair "$host" "$code"
+    else
+      "$ADB_BIN" pair "$host"
+    fi
+    info "paired. now: ./redrock connect <ip:connect-port>"
+    ;;
+
+  connect)
+    target="$(quest_target "${1:-}")"
+    require_adb
+    "$ADB_BIN" connect "$target"
+    info "connected $target"
+    "$ADB_BIN" devices -l
+    ;;
+
+  disconnect)
+    require_adb
+    if [[ -n "${1:-}" ]]; then
+      "$ADB_BIN" disconnect "$(quest_target "$1")"
+    else
+      "$ADB_BIN" disconnect
+    fi
+    ;;
+
+  load|install)
+    apk="$(pick_apk "${1:-}")"
+    require_device
+    info "installing $apk"
+    "$ADB_BIN" install -r --user 0 "$apk"
+    info "installed. launch with: ./redrock launch"
+    ;;
+
+  launch)
+    require_device
+    pkg="${1:-$PACKAGE}"
+    info "starting $pkg"
+    "$ADB_BIN" shell monkey -p "$pkg" -c android.intent.category.LAUNCHER 1 >/dev/null
+    ;;
+
+  stop)
+    require_device
+    pkg="${1:-$PACKAGE}"
+    "$ADB_BIN" shell am force-stop "$pkg"
+    info "stopped $pkg"
+    ;;
+
+  uninstall)
+    require_device
+    pkg="${1:-$PACKAGE}"
+    "$ADB_BIN" uninstall "$pkg"
+    ;;
+
+  logs|log|logcat)
+    require_device
+    mkdir -p "$ROOT/logs"
+    stamp="$(date +%Y%m%d-%H%M%S)"
+    logfile="$ROOT/logs/redrock-$stamp.txt"
+    pkg="${1:-}"
+    info "logcat → $logfile  (Ctrl-C to stop)"
+    if [[ -z "$pkg" ]]; then
+      pkg="$PACKAGE"
+    fi
+    pid="$("$ADB_BIN" shell pidof -s "$pkg" 2>/dev/null | tr -d '\r' || true)"
+    if [[ -n "$pid" ]]; then
+      info "filtering pid $pid ($pkg)"
+      "$ADB_BIN" logcat -v color,time --pid="$pid" | tee "$logfile"
+    elif [[ "$pkg" == *"*"* || "$pkg" == *:* ]]; then
+      "$ADB_BIN" logcat -v color,time "$pkg" | tee "$logfile"
+    else
+      warn "package $pkg is not running; showing unfiltered logcat (Unity:Unity *:S also works)"
+      "$ADB_BIN" logcat -v color,time | tee "$logfile"
+    fi
+    ;;
+
+  pull-logs)
+    require_device
+    mkdir -p "$ROOT/logs"
+    dest="$ROOT/logs/logcat-$(date +%Y%m%d-%H%M%S).txt"
+    "$ADB_BIN" logcat -d -v time >"$dest"
+    info "wrote $dest"
+    ;;
+
+  shell)
+    require_device
+    exec "$ADB_BIN" shell "$@"
+    ;;
+
+  help|-h|--help)
+    cat <<EOF
+RedRock — Oculus Quest sidecar (ADB load + logs)
+
+Usage: ./redrock <command>
+
+  status              Check adb and attached headsets
+  pair IP:PORT [CODE] Wireless pairing (Quest Wireless debugging)
+  connect [IP[:PORT]] Wireless connect (uses QUEST_HOST from .env)
+  disconnect [target] Drop wireless/USB adb session
+  load [apk]          Sideload apk/ newest build, or a path
+  logs [package]      Follow logcat (saves under logs/)
+  pull-logs           Dump current logcat buffer to logs/
+  launch [package]    Start the installed app
+  stop [package]      Force-stop the app
+  uninstall [package] Remove the installed app
+  shell               adb shell on the headset
+
+Drop APKs in apk/. Copy .env.example to .env for wireless host + package name.
+EOF
+    ;;
+
+  *)
+    die "unknown command: $CMD  (try: ./redrock help)"
+    ;;
+esac

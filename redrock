@@ -55,12 +55,27 @@ case "$CMD" in
     fi
     ;;
 
+  build)
+    require_java
+    info "assembleDebug"
+    "$ROOT/gradlew" -p "$ROOT" :app:assembleDebug
+    mkdir -p "$ROOT/apk"
+    cp -f "$ROOT/app/build/outputs/apk/debug/app-debug.apk" "$ROOT/apk/redrock-debug.apk"
+    info "apk → apk/redrock-debug.apk"
+    ;;
+
   load|install)
     apk="$(pick_apk "${1:-}")"
     require_device
     info "installing $apk"
     "$ADB_BIN" install -r --user 0 "$apk"
     info "installed. launch with: ./redrock launch"
+    ;;
+
+  run)
+    "$ROOT/redrock" build
+    "$ROOT/redrock" load "$ROOT/apk/redrock-debug.apk"
+    "$ROOT/redrock" launch
     ;;
 
   launch)
@@ -105,6 +120,37 @@ case "$CMD" in
     fi
     ;;
 
+  mods)
+    require_device
+    sub="${1:-list}"
+    shift || true
+    case "$sub" in
+      list|ls)
+        info "mods on headset"
+        "$ADB_BIN" shell "run-as $PACKAGE ls -l files/mods 2>/dev/null || echo '(none)'"
+        ;;
+      push)
+        src="${1:-}"
+        [[ -n "$src" && -f "$src" ]] || die "usage: ./redrock mods push <file.so>"
+        [[ "$src" == *.so ]] || die "mods must be arm64 .so files"
+        name="$(basename "$src")"
+        info "push $name → files/mods/"
+        "$ADB_BIN" shell "run-as $PACKAGE mkdir -p files/mods"
+        base64 < "$src" | "$ADB_BIN" shell "run-as $PACKAGE sh -c 'base64 -d > files/mods/$name && chmod 755 files/mods/$name'"
+        info "installed $name  (toggle on the toolbox tab, then Play)"
+        ;;
+      rm|remove)
+        name="${1:-}"
+        [[ -n "$name" ]] || die "usage: ./redrock mods rm <file.so>"
+        "$ADB_BIN" shell "run-as $PACKAGE rm -f files/mods/$name"
+        info "removed $name"
+        ;;
+      *)
+        die "usage: ./redrock mods [list|push file.so|rm file.so]"
+        ;;
+    esac
+    ;;
+
   pull-logs)
     require_device
     mkdir -p "$ROOT/logs"
@@ -128,8 +174,13 @@ Usage: ./redrock <command>
   pair IP:PORT [CODE] Wireless pairing (Quest Wireless debugging)
   connect [IP[:PORT]] Wireless connect (uses QUEST_HOST from .env)
   disconnect [target] Drop wireless/USB adb session
+  build               Gradle assembleDebug → apk/redrock-debug.apk
   load [apk]          Sideload apk/ newest build, or a path
+  run                 Build, sideload, and launch
   logs [package]      Follow logcat (saves under logs/)
+  mods list           List .so mods on the headset
+  mods push file.so   Install an arm64 mcpelauncher-style mod
+  mods rm file.so     Remove a mod
   pull-logs           Dump current logcat buffer to logs/
   launch [package]    Start the installed app
   stop [package]      Force-stop the app

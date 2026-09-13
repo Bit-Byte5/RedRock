@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item name="title_panel" type="id" />
+  <item name="exit_panel" type="id" />
+  <item name="google_login_poll" type="id" />
+</resources>

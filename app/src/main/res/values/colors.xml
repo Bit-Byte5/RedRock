@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="black">#000000</color>
+  <color name="rock_red">#E22B14</color>
+  <color name="rock_glow">#FF8A3A</color>
+  <color name="sand">#F4E6D8</color>
+</resources>

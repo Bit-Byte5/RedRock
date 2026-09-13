@@ -12,22 +12,33 @@ apk/*.obb
 # Captured logcat
 logs/
 
+# Native mods staged on the Mac (headset copies live in app filesDir)
+mods/*.so
+
 # OS / editor
+.cursor/
 .DS_Store
 Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
 
-# Android / Unity / Unreal leftovers if the app tree lands here later
+# Android
 *.apk
 *.aab
 *.obb
+.gradle/
+**/build/
+local.properties
+*.iml
+.cxx/
+.kotlin/
+captures/
+.idea/
+
+# Unity / Unreal leftovers if a later tree lands here
 Library/
 Temp/
 Obj/
 Builds/
 Build/
-.gradle/
-local.properties
-*.iml

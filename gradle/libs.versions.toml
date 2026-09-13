@@ -1,0 +1,40 @@
+[versions]
+spatialsdk = "0.14.0"
+agp = "8.9.1"
+kotlin = "2.1.0"
+coreKtx = "1.13.1"
+composeActivity = "1.9.2"
+composeBom = "2024.09.03"
+lifecycle = "2.8.6"
+okhttp = "4.12.0"
+gplayapi = "3.5.6"
+securityCrypto = "1.0.0"
+appcompat = "1.7.0"
+
+[libraries]
+meta-spatial-sdk-base = { group = "com.meta.spatial", name = "meta-spatial-sdk", version.ref = "spatialsdk" }
+meta-spatial-sdk-compose = { group = "com.meta.spatial", name = "meta-spatial-sdk-compose", version.ref = "spatialsdk" }
+meta-spatial-sdk-toolkit = { group = "com.meta.spatial", name = "meta-spatial-sdk-toolkit", version.ref = "spatialsdk" }
+meta-spatial-sdk-vr = { group = "com.meta.spatial", name = "meta-spatial-sdk-vr", version.ref = "spatialsdk" }
+meta-spatial-sdk-uiset = { group = "com.meta.spatial", name = "meta-spatial-sdk-uiset", version.ref = "spatialsdk" }
+
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "composeActivity" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+gplayapi = { group = "com.auroraoss", name = "gplayapi", version.ref = "gplayapi" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+meta-spatial-plugin = { id = "com.meta.spatial.plugin", version.ref = "spatialsdk" }

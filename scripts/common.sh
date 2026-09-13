@@ -22,6 +22,12 @@ load_env() {
   QUEST_PORT="${QUEST_PORT:-5555}"
 }
 
+require_java() {
+  if ! command -v java >/dev/null 2>&1; then
+    die "java not found. Install a JDK 17+ (OpenJDK 21 on this machine is fine)."
+  fi
+}
+
 find_adb() {
   if [[ -n "$ADB_BIN" && -x "$ADB_BIN" ]]; then
     return 0
@@ -66,6 +72,7 @@ device_count() {
 }
 
 require_device() {
+  require_adb
   local count
   count="$(device_count)"
   if [[ "$count" -lt 1 ]]; then

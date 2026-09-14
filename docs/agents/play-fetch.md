@@ -1,6 +1,6 @@
 # Play fetch (agent spec)
 
-Working spec for mcpelauncher-style Google Play downloads.
+Working spec for mcpelauncher-style Google Play downloads. Human-facing docs: [../using.md](../using.md), [../legal.md](../legal.md).
 
 **Current client:** `GooglePlayCatalog` + EmbeddedSetup WebView. Tokens live in EncryptedSharedPreferences on the headset. No AAS values in git, logs, or the UI.
 
@@ -15,7 +15,7 @@ Google Play has no consumer “save this APK to disk” API. The allowed pattern
 3. Keep the files for **personal, non-commercial** use on **this user’s** devices.
 4. Do not sell, host, or otherwise redistribute the APK.
 
-Play Console / the Developer API is only for **apps SaltMarsh publishes**. Wrong path for third-party titles.
+Play Console / the Developer API is only for **apps you publish**. Wrong path for third-party titles.
 
 An unofficial Play client (same class as mcpelauncher / `apkeep`) can violate Google’s Terms of Service. Google may terminate the account. Prefer a disposable Google account once real login exists. Never use someone else’s account.
 

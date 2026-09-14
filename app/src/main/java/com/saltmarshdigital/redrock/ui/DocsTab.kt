@@ -43,6 +43,10 @@ private val Chapters =
     DocChapter(R.string.docs_ch7_title, R.string.docs_ch7_body),
     DocChapter(R.string.docs_ch8_title, R.string.docs_ch8_body),
     DocChapter(R.string.docs_ch9_title, R.string.docs_ch9_body),
+    DocChapter(R.string.docs_ch10_title, R.string.docs_ch10_body),
+    DocChapter(R.string.docs_ch11_title, R.string.docs_ch11_body),
+    DocChapter(R.string.docs_ch12_title, R.string.docs_ch12_body),
+    DocChapter(R.string.docs_ch13_title, R.string.docs_ch13_body),
   )
 
 @Composable

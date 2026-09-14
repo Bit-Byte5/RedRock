@@ -1,32 +1,34 @@
 # RedRock
 
-Quest hybrid app: a **2D Horizon window**. Play hosts Minecraft inside RedRock (extracted APK, not a second Quest app).
+Public open-source Quest app: a **2D Horizon window** that can host **Minecraft you already own**. Unofficial. Not a store. Not a cracked APK.
 
 ```
-Home / library
-    └─ LauncherActivity     2D panel (com.oculus.intent.category.2D)
-            Play
-            └─ MonoGameScreen      full-view GLES 3
-                    Leave back to library
+Home / library (2D window)
+    └─ LauncherActivity
+            Download  →  Play APKs into RedRock private storage
+            Play      →  hosted Minecraft in the same window
 ```
 
-## Prereqs
+Stereo VR is not implemented yet. Sideloaded builds live under **Unknown Sources**, not the Store dock.
 
-- Android platform-tools (`adb`). Homebrew: `brew install android-platform-tools`
-- Headset in Developer Mode
-- JDK 17+ (OpenJDK 21 is fine)
+**Repo:** [github.com/Bit-Byte5/RedRock](https://github.com/Bit-Byte5/RedRock) (public). Do not commit tokens, `.env`, APKs, or headset IPs.
 
-## Commands
+## Docs
+
+Full write-up: **[docs/](docs/README.md)** — getting started, headset, using the library, mods, CLI, architecture, contributing, legal.
+
+On the headset: left rail **Books** tab (same topics, shorter).
+
+## Quick start
+
+Prereqs: JDK 17+, `adb` (`brew install android-platform-tools`), Quest in Developer Mode.
 
 ```bash
-./redrock status              # adb server + attached devices
-./redrock build               # assembleDebug → apk/redrock-debug.apk
-./redrock load                # sideload newest apk/
-./redrock run                 # build + load + launch
-./redrock logs                # follow logcat, write logs/
-./redrock mods push file.so   # install an arm64 .so onto the headset
-./redrock mods list           # list mods on the headset
+./redrock status    # adb + devices
+./redrock run       # build, sideload, launch
 ```
+
+Then Unknown Sources → RedRock → Settings → Google → sign in with the account that owns Minecraft → **Download** → **Play**.
 
 Wireless:
 
@@ -35,22 +37,10 @@ Wireless:
 ./redrock connect 192.168.x.x:5555
 ```
 
-Copy `.env.example` to `.env` for `QUEST_HOST` and package name.
-
-## Layout
-
-```
-app/          Android / Spatial SDK hybrid
-apk/          sideload APKs (gitignored)
-mods/         staged arm64 .so mods (gitignored)
-logs/         captured logcat (gitignored)
-redrock       CLI
-```
+Copy `.env.example` to `.env` for `QUEST_HOST`. Never commit `.env`.
 
 ## License
 
-[BSD 3-Clause](LICENSE). Use the code however you want. It is provided **as is**, with no warranty. The authors are not responsible for how you use it.
+[BSD 3-Clause](LICENSE). Use the code however you want. **As is**, no warranty, authors not responsible for how you use it.
 
-The **RedRock** name is not included. Forks must not impersonate the official project. See [TRADEMARKS.md](TRADEMARKS.md).
-
-Remote: [Bit-Byte5/RedRock](https://github.com/Bit-Byte5/RedRock).
+The **RedRock** name is not included. Do not impersonate the official project. [TRADEMARKS.md](TRADEMARKS.md). [Legal](docs/legal.md).

@@ -166,7 +166,7 @@ case "$CMD" in
 
   help|-h|--help)
     cat <<EOF
-RedRock — Oculus Quest sidecar (ADB load + logs)
+RedRock — Quest sidecar (ADB load + logs + build)
 
 Usage: ./redrock <command>
 
@@ -188,6 +188,7 @@ Usage: ./redrock <command>
   shell               adb shell on the headset
 
 Drop APKs in apk/. Copy .env.example to .env for wireless host + package name.
+Docs: docs/README.md (public GitHub). Never commit .env, APKs, or tokens.
 EOF
     ;;
 

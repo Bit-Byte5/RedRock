@@ -1,27 +1,32 @@
 # Minecraft host (agent spec)
 
-Play loads **extracted** Minecraft into the **same 2D Quest window**. Not PackageInstaller. Not a second Quest app. Not stereo.
+Play loads **extracted** Minecraft into the **same 2D Quest window**. Not PackageInstaller. Not a second Quest app. Not stereo. Human-facing docs: [../architecture.md](../architecture.md), [../using.md](../using.md).
 
 ```
 LauncherActivity  (com.oculus.intent.category.2D, singleTask, …redrock.launcher)
   library UI
   Download ──► Play APKs ──► filesDir/game/com.mojang.minecraftpe/{apks,lib/arm64-v8a}
-  Play ──► com.mojang.minecraftpe.MainActivity   same task, default process
+  Play ──► HostPreflight ──► com.mojang.minecraftpe.MainActivity   same task, default process
               stub libminecraftpe.so ──► dlopen extracted libminecraftpe.so
 
 ImmersiveActivity (com.oculus.intent.category.VR)
   later stereo only
 ```
 
+Native `SIGABRT` cannot be caught. **Do not start `MainActivity` unless `HostPreflight` passed.** One new abort later = add **one** preflight check. Do not overlay dex `resources.arsc` onto RedRock `Resources` to paper over a missing asset.
+
 ## Load order (must stay in this order)
 
-1. `GooglePlayCatalog.fetch` writes splits under `cacheDir/play/<pkg>/`.
-2. `install()` calls `GameStore.extract` (not PackageInstaller). Native libs come from `lib/arm64-v8a/` inside the APKs. Dex APKs stay as files. If `version.txt` already matches, extract is skipped; a new version replaces the payload.
-3. `LauncherActivity.playMinecraft` requires `GameStore.payload()` (or adopts the Play cache). Then it starts `GameStore.MAIN_ACTIVITY` **without** `NEW_TASK`.
-4. `MinecraftComponentFactory.instantiateActivity` builds Minecraft’s real `MainActivity` from a `PathClassLoader` over the extracted dex + `libDir`. That activity is GameActivity / AppCompat — theme is `RedRockGame`, not `Theme.Black`.
-5. `GameRuntime` replaces Play Integrity–protected `.so` files (`libpairipcore`, `libmaesdk`, `libPlayFabMultiplayer`) with RedRock no-op stubs. The real copies SIGSEGV inside a host package.
-6. **Before** `MainActivity` `<clinit>`, `GameRuntime.startPairIp` runs `com.pairip.application.Application` against those stubs so `VMRunner.executeVM` does not jump into the real PairIP VM.
-7. NativeActivity/GameActivity loads **RedRock’s** stub `libminecraftpe.so`, which `dlopen`s the extracted real library using `REDROCK_MINECRAFTPE` / `filesDir/game/…/libminecraftpe.so`.
+1. Fetch + size check — `GooglePlayCatalog.fetch` writes splits under `cacheDir/play/<pkg>/`. Incomplete downloads fail.
+2. Extract + zip repair / remap — `install()` calls `GameStore.extract` (not PackageInstaller). Native libs come from `lib/arm64-v8a/` inside the APKs. Dex APKs stay as files. Skip extract only when `version.txt` matches **and** the payload is host-ready (`libminecraftpe.so`, dex, `install_pack` zip with `assets/bootstrap.json`). Otherwise repair or re-extract. `install_pack.apk` is rebuilt from local ZIP headers if the central directory is missing, and `assets/assets/` is remapped to `assets/`.
+3. Library `HostPreflight` — `LauncherActivity.playMinecraft` prepares assets, attaches stubs, then checks payload + zip + a temporary `AssetManager` over **asset packs only** can `open("bootstrap.json")` (cookie != 0) + stub `.so` files. Failure: toast, stay on the library, no `startActivity`.
+4. `startActivity` same task, no `NEW_TASK` — `GameStore.MAIN_ACTIVITY`.
+5. PairIP stubs + `startPairIp` — `GameRuntime` replaces `libpairipcore`, `libmaesdk`, `libPlayFabMultiplayer`. **Before** `MainActivity` `<clinit>`, `startPairIp` runs `com.pairip.application.Application` against those stubs. Do not call `SignatureCheck.verifyIntegrity`.
+6. `bindActivity` asset packs only — `addAssetPath` `install_pack` (and other asset-only APKs) onto the **activity** `AssetManager` so native `AAssetManager_open` sees `bootstrap.json`. Do not `addAssetPath` dex APKs (`base.apk`, `config.*`) onto `Resources`. Do not replace the activity `Resources` — GameActivity inflates AppCompat / games-activity `0x7f` layouts from RedRock. Application `getResources()` stays RedRock.
+7. Theme `RedRockGame` — not Minecraft `AppTheme`, not `Theme.Black`.
+8. Then GameActivity / `libminecraftpe` — RedRock’s stub `libminecraftpe.so` `dlopen`s the extracted real library using `REDROCK_MINECRAFTPE` / `filesDir/game/…/libminecraftpe.so`.
+
+`MinecraftComponentFactory.instantiateActivity` builds Minecraft’s real `MainActivity` from a `PathClassLoader` over the extracted dex + `libDir`.
 
 ## Must not break
 

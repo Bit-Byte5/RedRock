@@ -18,6 +18,8 @@
   <string name="mods_required">Required</string>
   <string name="mods_core_name">RedRock Core</string>
   <string name="mods_core_meta">Always on · %1$s</string>
+  <string name="mods_vred_name">VRed</string>
+  <string name="mods_vred_meta">Stereo VR · %1$s</string>
   <string name="unofficial">Unofficial</string>
   <string name="unofficial_title">Unofficial</string>
   <string name="unofficial_body">RedRock is an unofficial, personal project.\n\nIt is not affiliated with, endorsed by, sponsored by, or approved by Microsoft, Mojang Studios, Xbox, Google, Meta, or any of their subsidiaries.\n\nMinecraft® is a trademark of Mojang Synergies AB / Microsoft. Google Play™ and Android are trademarks of Google LLC. Meta Quest® and Horizon OS are trademarks of Meta Platforms, Inc.\n\nRedRock only downloads apps the signed-in Google account already owns, for personal use on this user’s devices. It does not sell, host, or redistribute APKs. Play may refuse a download. That is not a bypass.\n\nUse at your own risk.</string>
@@ -28,31 +30,43 @@
   <string name="docs_title">Instructions</string>
 
   <string name="docs_ch1_title">1. Welcome</string>
-  <string name="docs_ch1_body">RedRock is a Quest window for Minecraft you already own.\n\nIt is not a store copy and not a cracked APK. This window is the library. Play fills the same window — it does not dump you into stereo VR yet.</string>
+  <string name="docs_ch1_body">RedRock is a Quest window for Minecraft you already own.\n\nIt is unofficial and open source (BSD 3-Clause). It is not a Store copy, not a cracked APK, and not affiliated with Mojang, Google, or Meta.\n\nThis window is the library. Play fills the same 2D window. It does not dump you into stereo VR yet.\n\nYou must own Minecraft on Google Play. RedRock asks Play for that copy and hosts it inside RedRock. It does not install Minecraft as a second Quest app.\n\nLonger docs live on GitHub: github.com/Bit-Byte5/RedRock (public). Do not put tokens, passwords, or APKs in that repo.</string>
 
   <string name="docs_ch2_title">2. The window</string>
-  <string name="docs_ch2_body">Left sidebar is the main chrome.\n\n• Grass block — Game\n• Toolbox — native mods\n• Books — these docs\n• Computer — live log\n• Sliders — Settings\n\nThe bottom bar holds the Minecraft version picker and Play. Tap the version to choose Latest (Play’s current build) or a specific release. If Minecraft is not on the headset yet, Play says Download.</string>
+  <string name="docs_ch2_body">Left sidebar is the main chrome. Press a tab — it lifts toward you when it is selected.\n\n• Grass block — Game (hero cube only)\n• Toolbox — native mods\n• Books — these docs\n• Computer — live log\n• Sliders — Settings (Google + mixer)\n• Unofficial — disclaimer\n\nBottom bar: Minecraft version chip and Play. Tap the version for Latest (Play’s current build) or a listed Bedrock release.\n\nIf Minecraft is not extracted yet, Play says Download. After a good download it says Play.</string>
 
   <string name="docs_ch3_title">3. Game tab</string>
-  <string name="docs_ch3_body">The Game tab is the grass block. The big cube in the middle is just the hero — Play (or Download) lives on the bottom bar.\n\nPress a tab to lift it toward you. That is how you know it is selected.</string>
+  <string name="docs_ch3_body">The Game tab is the grass block. The big cube is just the hero. Download and Play live on the bottom bar, not on the cube.\n\nStay on this tab while a download runs if you want to watch the bar. You can still open Docs or Settings; do not start another download until the current one finishes.</string>
 
   <string name="docs_ch4_title">4. Download</string>
-  <string name="docs_ch4_body">Download talks to Google Play as the account that owns Minecraft. Press Play when the button says Download.\n\n1. Use a Google account that already owns the app.\n2. Sign in on the page RedRock opens. RedRock never reads your password.\n3. Play must allow the download. If it refuses, you do not own it, or Play blocked it.\n\nNo mirrors. No paid bypass. Quest needs the arm64 build.</string>
+  <string name="docs_ch4_body">Download talks to Google Play as the signed-in account.\n\n1. Settings → Google. Confirm it is the account that owns Minecraft.\n2. Pick Latest or a listed version on the bottom chip.\n3. Press Download. If you are signed out, Google’s login page opens here. RedRock never reads your password — only a one-time login cookie, stored on this headset.\n4. Play must allow it. If it refuses, you do not own it, the region blocks it, or Play said no. That is not a bypass.\n\nNo APKPure. No mirrors. No friend’s dump. Quest needs arm64-v8a. A Mac mcpelauncher x86 extract will not run here.\n\nFiles unpack into RedRock private storage, not a second Minecraft icon.</string>
 
   <string name="docs_ch5_title">5. Play</string>
-  <string name="docs_ch5_body">Once Minecraft is on the headset, Play starts it in this same 2D window. It does not install Minecraft as a separate Quest app.\n\nIf the button still says Download, the game is not on disk yet. Stereo OpenXR is later.</string>
+  <string name="docs_ch5_body">When the button says Play, RedRock checks the extracted game (preflight), then starts Minecraft’s MainActivity in this same 2D window.\n\nIf it still says Download, the game is not on disk. If it says the game is not ready, preflight failed — open the Log tab. Native crashes cannot be caught, so RedRock refuses to start a bad payload.\n\nLeave with B from the hosted menu, or the library Leave control when you are back in RedRock chrome.\n\nStereo OpenXR is later. VRed on the mods tab is an empty scaffold.</string>
 
   <string name="docs_ch6_title">6. Controls</string>
-  <string name="docs_ch6_body">In the library window:\n• Laser pointer + trigger to click\n\nIn the game menu:\n• Point + trigger, or A to confirm\n• Stick up / down to move the highlight\n• B to leave\n\nLook, Volume, and Google account are on the Settings tab.</string>
+  <string name="docs_ch6_body">Library window:\n• Laser pointer + trigger to click\n• Quest keyboard on Google sign-in — tap a field if it does not appear\n\nHosted game menu:\n• Point + trigger, or A to confirm\n• Stick up / down to move the highlight\n• B to leave\n\nLook and Volume are Settings → Mixer. They are local to this window. They are not written into Minecraft yet.</string>
 
   <string name="docs_ch7_title">7. Settings</string>
-  <string name="docs_ch7_body">Settings has two pages: Google and Mixer.\n\nGoogle shows the signed-in Play profile so you can check it is the right account. Tap the card to sign in. When signed in, Sign out or Switch account.\n\nLook and Volume are local to this window for now. They are not written out to Minecraft yet.</string>
+  <string name="docs_ch7_body">Two pages: Google (first) and Mixer.\n\nGoogle is how you know Play is using the right account. Signed out: tap the card or Sign in. Signed in: you see the email. Sign out or Switch account. Sign-in from here does not start a download.\n\nUse an account that already owns Minecraft. An unofficial Play client can violate Google’s terms. Google may ban the account. Prefer a spare account. Never sign in as someone else.\n\nMixer: Look and Volume only. Not saved into the game yet.</string>
 
   <string name="docs_ch8_title">8. Headset menu</string>
-  <string name="docs_ch8_body">Sideloaded RedRock does not sit in the Store library or the bottom dock.\n\n1. Press the Meta button\n2. Open Apps / Library\n3. Left side — folder with a question mark — Unknown Sources\n4. RedRock\n\nIf that folder is missing, toggle Developer Mode off and on in the phone app, then reboot.</string>
+  <string name="docs_ch8_body">Sideloaded RedRock is not in the Store library or the bottom dock. You need Developer Mode.\n\n1. Press the Meta button\n2. Open Apps / Library\n3. Left side — question-mark folder — Unknown Sources\n4. RedRock\n\nIf that folder is missing: Developer Mode off and on in the phone app, reboot, sideload again from a computer (./redrock load).\n\nUSB: accept the RSA prompt. Wireless: pair port and connect port are different. Pairing code is not the connect IP.</string>
 
   <string name="docs_ch9_title">9. Mods</string>
-  <string name="docs_ch9_body">The toolbox tab is the mod loader. RedRock Core is always on and loads into the hosted game (mod_preinit, then libminecraftpe, then mod_init). Extra mods are mcpelauncher-style arm64 .so files — not Java Fabric/Forge jars and not marketplace add-ons.\n\nAdd a mod\n1. Put an arm64-v8a .so on the headset (Files / Downloads, or adb).\n2. On the toolbox tab, press Add and pick that .so.\n3. Toggle Off to skip it on the next Play, or Remove to delete it.\n4. Press Play.\n\nFrom a computer you can still run:\n./redrock mods push libThatMod.so\n\nQuest is arm64-v8a. An x86 or x86_64 mcpelauncher .so from the Mac will not load. Mods that call mcpelauncher_hook / mcpelauncher_preinithook resolve against RedRock’s libmcpelauncher_mod.so.</string>
+  <string name="docs_ch9_body">Toolbox tab. Extra mods are mcpelauncher-style arm64 .so files. Not Fabric/Forge jars. Not marketplace packs. Not x86 Mac .so files.\n\nRedRock Core — always on, cannot remove. Loads mod_preinit, then libminecraftpe, then mod_init.\n\nVRed — stereo scaffold. Cannot remove, can disable. Stereo is not implemented. The toggle only loads or skips an empty stub.\n\nAdd extra mods\n1. Put an arm64-v8a .so on the headset (Files / Downloads, or adb).\n2. Add, pick the .so.\n3. Off skips it next Play. Remove deletes it.\n4. Play.\n\nFrom a computer: ./redrock mods push libThatMod.so\n\nHooks (mcpelauncher_hook / mcpelauncher_preinithook) resolve against RedRock’s libmcpelauncher_mod.so.</string>
+
+  <string name="docs_ch10_title">10. Open source</string>
+  <string name="docs_ch10_body">Source is public: github.com/Bit-Byte5/RedRock\n\nBSD 3-Clause: people may use the code however they want. No warranty. The authors are not responsible for bans, broken headsets, or how anyone uses a fork.\n\nThe name RedRock is not licensed. Forks must not pretend to be the official project.\n\nNever commit Google tokens, .env, APKs, OBB, logs, or headset IPs. Issues and PRs are public too — redact secrets.\n\nLonger pages: docs/ on GitHub (getting started, legal, architecture, CLI).</string>
+
+  <string name="docs_ch11_title">11. What this is not</string>
+  <string name="docs_ch11_body">Not a Minecraft Store listing.\nNot a pirate client.\nNot a way to skip paying for Bedrock.\nNot PackageInstaller — you should not get a second Minecraft app from Download.\nNot working stereo VR yet.\nNot a desktop Play downloader (./redrock fetch does not exist). Downloads run on the headset.\n\nIf Play says no, stop. Do not look for another APK site.</string>
+
+  <string name="docs_ch12_title">12. If it breaks</string>
+  <string name="docs_ch12_body">No device on the computer: USB prompt, or pair then connect on the right ports.\n\nCannot find the app: Unknown Sources, Developer Mode, reboot, sideload again.\n\nWrong account / does not own Minecraft: Settings → Google → switch.\n\nPlay refused: TOS / region / DRM. Not a RedRock bypass.\n\nNo arm64: Play sent the wrong ABI.\n\nStill Download after a wait: Log tab. Look at package name and fetch state. Do not paste cookies into a public GitHub issue.\n\nGame not ready: preflight failed. Try that version again. Do not copy a Mac mcpelauncher folder onto Quest.\n\nDisable extra mods first if the game dies after Play.</string>
+
+  <string name="docs_ch13_title">13. Computer sidecar</string>
+  <string name="docs_ch13_body">On a Mac or Linux clone of the repo:\n\n./redrock status\n./redrock run          build + sideload + launch\n./redrock logs         logcat into logs/ (gitignored)\n./redrock mods list | push file.so | rm file.so\n\nNeed JDK 17+ and adb. Copy .env.example to .env for QUEST_HOST. Never commit .env.\n\nPackage name: com.saltmarshdigital.redrock</string>
   <string name="settings_look">Look</string>
   <string name="settings_volume">Volume</string>
   <string name="settings_mixer">Mixer</string>
@@ -80,6 +94,9 @@
   <string name="version_title">Version</string>
   <string name="play">Play</string>
   <string name="play_missing_game">Download the game first</string>
+  <string name="play_preparing_assets">Preparing game assets…</string>
+  <string name="play_prepare_failed">Could not repair game assets</string>
+  <string name="play_preflight_failed">Game is not ready to play</string>
   <string name="leave">Leave</string>
   <string name="mono_host_status">Full view · waiting for game</string>
   <string name="mc_button_play">Play Game</string>
